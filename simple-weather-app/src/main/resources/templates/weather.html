@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Weather App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .weather-form {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        input[type="text"] {
+            width: 70%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        .weather-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .error {
+            color: #e74c3c;
+            padding: 10px;
+            background: #fadbd8;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+        .advice {
+            background-color: #e8f4f8;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 15px;
+            border-left: 4px solid #3498db;
+        }
+    </style>
+</head>
+<body>
+<h1>Weather Checker</h1>
+
+<div class="weather-form">
+    <form method="get" action="/weather">
+        <input type="text" name="city"
+               th:value="${city}"
+               placeholder="Enter city name" required>
+        <button type="submit">Get Weather</button>
+    </form>
+</div>
+
+<div th:if="${error}" class="error" th:text="${error}"></div>
+
+<div th:if="${weather}" class="weather-card">
+    <h2>Weather in <span th:text="${weather.name}"></span></h2>
+    <p><strong>Condition:</strong> <span th:text="${weather.weather[0].main}"></span></p>
+    <p><strong>Description:</strong> <span th:text="${weather.weather[0].description}"></span></p>
+    <p><strong>Temperature:</strong> <span th:text="${#numbers.formatDecimal(weather.main.temp, 1, 1)}"></span>°C</p>
+    <p><strong>Feels like:</strong> <span th:text="${#numbers.formatDecimal(weather.main.feels_like, 1, 1)}"></span>°C</p>
+
+    <div th:if="${advice}" class="advice">
+        <strong>Advice:</strong> <span th:text="${advice}"></span>
+    </div>
+</div>
+</body>
+</html>
